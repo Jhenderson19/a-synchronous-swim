@@ -1,3 +1,5 @@
+import {getSwimfromServer} from './httpHandler.js';
+
 const SwimTeam = {
 
   // direction, start and max all need to match the CSS
@@ -65,7 +67,17 @@ const SwimTeam = {
         SwimTeam.coords.left += 5;
       }
       break;
-    } 
+    }
+  },
+
+  synchronousSwim: function() {
+    setTimeout(function() {
+      getSwimfromServer(function(data) {SwimTeam.move(data)});
+      SwimTeam.synchronousSwim();
+    }, 250);
   }
 
 };
+SwimTeam.synchronousSwim();
+
+export default SwimTeam;

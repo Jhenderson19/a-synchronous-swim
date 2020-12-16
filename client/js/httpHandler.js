@@ -1,3 +1,5 @@
+var getSwimfromServer;
+
 (function() {
 
   const serverUrl = 'http://127.0.0.1:3000';
@@ -14,11 +16,12 @@
       contentType: false,
       processData: false,
       success: (data) => {
+        console.log(data);
         callback(data);
       }
     });
   }
-
+  getSwimfromServer = ajaxGetSwim;
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -61,3 +64,5 @@
   });
 
 })();
+
+export {getSwimfromServer};
