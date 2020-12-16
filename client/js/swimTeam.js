@@ -72,11 +72,14 @@ const SwimTeam = {
 
   synchronousSwim: function() {
     setTimeout(function() {
-      getSwimfromServer(function(data) {SwimTeam.move(data)});
+      getSwimfromServer(function(data) {
+        if(data !== 'nothing') {
+          SwimTeam.move(data);
+        }
+      });
       SwimTeam.synchronousSwim();
     }, 250);
   }
-
 };
 SwimTeam.synchronousSwim();
 

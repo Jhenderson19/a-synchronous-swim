@@ -16,7 +16,7 @@ var getSwimfromServer;
       contentType: false,
       processData: false,
       success: (data) => {
-        console.log(data);
+        //console.log(data);
         callback(data);
       }
     });
