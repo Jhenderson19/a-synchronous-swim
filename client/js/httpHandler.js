@@ -1,4 +1,5 @@
 var getSwimfromServer;
+var getBGfromServer;
 
 (function() {
 
@@ -11,7 +12,7 @@ var getSwimfromServer;
   const ajaxGetSwim = function(callback) {
     $.ajax({
       type: 'GET',
-      url: serverUrl,
+      url: serverUrl + "/?t=direction",
       cache: false,
       contentType: false,
       processData: false,
@@ -22,6 +23,21 @@ var getSwimfromServer;
     });
   }
   getSwimfromServer = ajaxGetSwim;
+
+  const ajaxGetBackgroundImage = function(callback) {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl + "/?t=bgImage",
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: (data) => {
+        //console.log(data);
+        callback(data);
+      }
+    });
+  }
+  getBGfromServer = ajaxGetBackgroundImage;
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -65,4 +81,4 @@ var getSwimfromServer;
 
 })();
 
-export {getSwimfromServer};
+export {getSwimfromServer, getBGfromServer};
