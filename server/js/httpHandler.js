@@ -33,10 +33,18 @@ module.exports.router = (req, res, next = ()=>{}) => {
       }
     } else if (type === 'bgImage') {
       //get data to send - use FS to grab image
-        //if data is not undefined
-          // send it
-        //else
+      fs.readFile(module.exports.backgroundImageFile, function(err, data) {
+        //if data is undefined
+        if(err) {
           //do default thing (404 ERROR: FILE NOT FOUND)
+          res.writeHead(404);
+        //else
+        } else {
+          // send it
+          res.writeHead(200, {'Content-Type': 'image/jpeg'});
+          res.write(data);
+        }
+      });
     }
   }
 
