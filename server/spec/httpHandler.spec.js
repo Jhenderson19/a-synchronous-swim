@@ -27,12 +27,14 @@ describe('server responses', () => {
     httpHandler.router(req, res);
     expect(res._responseCode).to.equal(200);
     expect(res._ended).to.equal(true);
+    //expect(res._data.toString()).to.equal('why dont this dang code work');
     expect(options.indexOf(res._data.toString())).not.to.equal(-1);
 
     done();
   });
 
-  xit('should respond with 404 to a GET request for a missing background image', (done) => {
+  it('should respond with 404 to a GET request for a missing background image', (done) => {
+    var str = httpHandler.backgroundImageFile;
     httpHandler.backgroundImageFile = path.join('.', 'spec', 'missing.jpg');
     let {req, res} = server.mock('/?t=bgImage', 'GET');
 
@@ -41,9 +43,10 @@ describe('server responses', () => {
       expect(res._ended).to.equal(true);
       done();
     });
+    httpHandler.backgroundImageFile = str;
   });
 
-  xit('should respond with 200 to a GET request for a present background image', (done) => {
+  it('should respond with 200 to a GET request for a present background image', (done) => {
     // write your test here
     let {req, res} = server.mock('/?t=bgImage', 'GET');
 

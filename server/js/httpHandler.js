@@ -15,39 +15,52 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   //console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  res.writeHead(200, headers);
+  console.log(module.exports.backgroundImageFile);
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, headers);
+    res.end();
+    next(); // invoke next() at the end of a request to help with testing!
+  };
 
   if (req.method === 'GET') {
     //some function that gets our type from url
     var trimURL = function(url) {
-      return url.slice(url.indexOf('='));
+      return url.slice(url.indexOf('=') + 1);
     }
     var type = trimURL(req.url);
 
     if(type === 'direction') {
+      res.writeHead(200, headers);
       var directionToSend = messageQueue.dequeue(); //get data to send
       if(directionToSend !== undefined) { //if data is not undefined
         res.write(directionToSend); // send it
       } else {                  //else
         res.write('nothing');  //do default thing
       }
+      res.end();
+      next(); // invoke next() at the end of a request to help with testing!
+
+
+
     } else if (type === 'bgImage') {
       //get data to send - use FS to grab image
       fs.readFile(module.exports.backgroundImageFile, function(err, data) {
         //if data is undefined
         if(err) {
           //do default thing (404 ERROR: FILE NOT FOUND)
-          res.writeHead(404);
+          res.writeHead(404, headers);
+          console.log(err)
         //else
         } else {
           // send it
-          res.writeHead(200, {'Content-Type': 'image/jpeg'});
+          res.writeHead(200, {'Content-Type': 'image/jpg'});
           res.write(data);
         }
+        res.end();
+        next(); // invoke next() at the end of a request to help with testing!
       });
     }
   }
 
-  res.end();
-  next(); // invoke next() at the end of a request to help with testing!
+
 };
