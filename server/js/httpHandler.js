@@ -15,6 +15,7 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
+
   if (req.method === 'OPTIONS') {
     res.writeHead(200, headers);
     res.end();
@@ -64,14 +65,18 @@ module.exports.router = (req, res, next = ()=>{}) => {
     // push user image to server and replace current image
     //fs.writeFile(module.exports.backgroundImageFile, )
     console.log("RECIEVED POST REQUEST");
-    let imageBase64 = '';
+    let imageBase64 = Buffer.alloc(0);
+    // let imageBase =
     req.on('data', (chunk) => {
-      imageBase64 += chunk.toString();
+      imageBase64 = Buffer.concat([imageBase64, chunk]);
     }).on('end', () => {
-      //image = new Image();
-      //imageBase64 = imageBase64.slice(imageBase64.indexOf('image/jpeg') + "image/jpeg".length);
-      //console.log(imageBase64);
-      fs.writeFile(module.exports.backgroundImageFile, imageBase64, {encoding: 'base64'}, function(error) {console.log(error)});
+      var image = multipart.getFile(imageBase64);
+      //console.log(image)
+      fs.writeFile(module.exports.backgroundImageFile, image.data, function(error) {
+        res.writeHead(error ? 400 : 201, headers);
+        res.end();
+        next();
+      });
     })
   }
 };

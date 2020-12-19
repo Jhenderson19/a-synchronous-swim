@@ -61,7 +61,7 @@ describe('server responses', () => {
 
   it('should respond to a POST request to save a background image', (done) => {
     fs.readFile(postTestFile, (err, fileData) => {
-      httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
+      httpHandler.backgroundImageFile = path.join('.', 'spec', 'water-lg.jpg');
       let {req, res} = server.mock('/', 'POST', fileData);
 
       httpHandler.router(req, res, () => {
@@ -74,7 +74,7 @@ describe('server responses', () => {
 
   it('should send back the previously saved image', (done) => {
     fs.readFile(postTestFile, (err, fileData) => {
-      httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
+      httpHandler.backgroundImageFile = path.join('.', 'spec', 'water-lg.multipart');
       let post = server.mock('/', 'POST', fileData);
 
       httpHandler.router(post.req, post.res, () => {
