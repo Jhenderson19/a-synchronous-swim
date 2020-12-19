@@ -45,18 +45,22 @@ var getBGfromServer;
   /////////////////////////////////////////////////////////////////////
 
   const ajaxFileUplaod = (file) => {
+    console.log('submit')
     var formData = new FormData();
     formData.append('file', file);
     $.ajax({
       type: 'POST',
       data: formData,
-      url: serverUrl,
+      url: serverUrl + '/',
       cache: false,
       contentType: false,
       processData: false,
       success: () => {
         // reload the page
         window.location = window.location.href;
+      },
+      error: (error) => {
+        console.log(error);
       }
     });
   };

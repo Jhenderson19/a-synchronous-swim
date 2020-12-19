@@ -14,8 +14,7 @@ module.exports.initialize = (queue) => {
 };
 
 module.exports.router = (req, res, next = ()=>{}) => {
-  //console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  console.log(module.exports.backgroundImageFile);
+  console.log('Serving request type ' + req.method + ' for url ' + req.url);
   if (req.method === 'OPTIONS') {
     res.writeHead(200, headers);
     res.end();
@@ -41,7 +40,6 @@ module.exports.router = (req, res, next = ()=>{}) => {
       next(); // invoke next() at the end of a request to help with testing!
 
 
-
     } else if (type === 'bgImage') {
       //get data to send - use FS to grab image
       fs.readFile(module.exports.backgroundImageFile, function(err, data) {
@@ -62,5 +60,18 @@ module.exports.router = (req, res, next = ()=>{}) => {
     }
   }
 
-
+  if (req.method === 'POST') {
+    // push user image to server and replace current image
+    //fs.writeFile(module.exports.backgroundImageFile, )
+    console.log("RECIEVED POST REQUEST");
+    let imageBase64 = '';
+    req.on('data', (chunk) => {
+      imageBase64 += chunk.toString();
+    }).on('end', () => {
+      //image = new Image();
+      //imageBase64 = imageBase64.slice(imageBase64.indexOf('image/jpeg') + "image/jpeg".length);
+      //console.log(imageBase64);
+      fs.writeFile(module.exports.backgroundImageFile, imageBase64, {encoding: 'base64'}, function(error) {console.log(error)});
+    })
+  }
 };

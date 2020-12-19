@@ -78,7 +78,7 @@ const SwimTeam = {
         }
       });
       SwimTeam.synchronousSwim();
-    }, 250);
+    }, 2000);
   }
 };
 SwimTeam.synchronousSwim();
